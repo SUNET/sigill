@@ -33,7 +33,7 @@ endif
 
 .PHONY: all
 all:
-	@$(MAKE) --no-print-directory hsmca docs/hsmca.1
+	@$(MAKE) --no-print-directory hsmca #docs/hsmca.1
 
 .PHONY: hsmca
 hsmca:
