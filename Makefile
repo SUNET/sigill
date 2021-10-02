@@ -26,29 +26,29 @@ else
 PATH := $(subst :,/bin:,$(shell go env GOPATH))/bin:$(PATH)
 endif
 
-LDFLAGS := -X github.com/sunet/hsmca/pkg/meta.commit=$(COMMIT) -X github.com/sunet/hsmca/pkg/meta.branch=$(BRANCH)
+LDFLAGS := -X github.com/sunet/sigill/pkg/meta.commit=$(COMMIT) -X github.com/sunet/sigill/pkg/meta.branch=$(BRANCH)
 ifdef VERSION
-	LDFLAGS += -X github.com/sunet/hsmca/pkg/meta.version=$(VERSION)
+	LDFLAGS += -X github.com/sunet/sigill/pkg/meta.version=$(VERSION)
 endif
 
 .PHONY: all
 all:
-	@$(MAKE) --no-print-directory hsmca #docs/sigill.1
+	@$(MAKE) --no-print-directory sigill #docs/sigill.1
 
-.PHONY: hsmca
-hsmca:
-	go build $(GO_BUILD_FLAGS) -ldflags "$(LDFLAGS)" ./cmd/hsmca
+.PHONY: sigill
+sigill:
+	go build $(GO_BUILD_FLAGS) -ldflags "$(LDFLAGS)" ./cmd/sigill
 
 docs/%.1: docs/%.ronn.1
 	ronn -r $< > $@
 
 .PHONY: go-install
 go-install:
-	go install -ldflags "-w -s $(LDFLAGS)" ./cmd/hsmca.go
+	go install -ldflags "-w -s $(LDFLAGS)" ./cmd/sigill.go
 
 .PHONY: install
-install: hsmca
-	$(INSTALL_EXEC) hsmca $(DESTDIR)$(BINDIR)
+install: sigill
+	$(INSTALL_EXEC) sigill $(DESTDIR)$(BINDIR)
 
 
 .PHONY: test
@@ -100,15 +100,15 @@ test-all: fmtcheck vet
 
 .PHONY: clean
 clean:
-	rm -f hsmca 
-	rm -f hsmca.exe
-	rm -f docs/hsmca.1
+	rm -f sigill 
+	rm -f sigill.exe
+	rm -f docs/sigill.1
 
 .PHONY: docker
 docker:
-	docker build -t "hsmca:$(COMMIT)" .
-	docker tag hsmca:$(COMMIT) docker.sunet.se/hsmca:$(COMMIT)
-	docker push docker.sunet.se/hsmca:$(COMMIT)
+	docker build -t "sigill:$(COMMIT)" .
+	docker tag sigill:$(COMMIT) docker.sunet.se/sigill:$(COMMIT)
+	docker push docker.sunet.se/sigill:$(COMMIT)
 
 deb-source:
 	go mod vendor
